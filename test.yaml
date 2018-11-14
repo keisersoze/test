@@ -10,3 +10,5 @@ ErrorModel:
           type: string
         debugMessage:
           type: string
+        test:
+          type: string
