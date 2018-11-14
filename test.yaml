@@ -1,0 +1,12 @@
+ErrorModel:
+      type: object
+      properties:
+        status:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        message:
+          type: string
+        debugMessage:
+          type: string
