@@ -1,4 +1,141 @@
-ErrorModel:
+components:
+  securitySchemes:
+    oAuth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: /oauth/token
+        password:
+          tokenUrl: /oauth/token
+    basicAuth:
+      type: http
+      scheme: basic
+      description: The client_id and the client_secret
+  responses:
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorModel'
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorModel'
+    NotFound:
+      description: NotFound
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorModel'
+    BadRequest:
+      description: BadRequest
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorModel'
+  schemas:
+    Client:
+      allOf:
+        - properties:
+            client_id:
+              type: string
+        - $ref: '#/components/schemas/ClientInfo'
+        - required:
+            - client_id
+          example:
+            client_id: openlaws
+            client_secret: secret
+            authorize_grant_types:
+              - client_credentials
+            authorities:
+              - ROLE_OPENLAWS_PREMIUM
+            redirect_uri:
+              - 'https://openlaws.com/?'
+    User:
+      allOf:
+        - properties:
+            username:
+              type: string
+        - $ref: '#/components/schemas/UserInfo'
+        - required:
+            - username
+          example:
+            username: admin
+            password: admin
+            account_non_epired: true
+            account_non_locked: true
+            credentials_non_expired: true
+            enabled: true
+            authorities:
+              - ROLE_ADMIN
+    ClientInfo:
+      properties:
+        client_secret:
+          type: string
+        scope:
+          type: array
+          items:
+            type: string
+        resource_ids:
+          type: array
+          items:
+            type: string
+        authorized_grant_types:
+          type: array
+          items:
+            type: string
+        authorities:
+          type: array
+          items:
+            type: string
+        redirect_uri:
+          type: array
+          items:
+            type: string
+        access_token_validity:
+          type: integer
+        refresh_token_validity:
+          type: integer
+      required:
+        - client_secret
+      example:
+        client_secret: secret
+        authorize_grant_types:
+          - client_credentials
+        authorities:
+          - ROLE_OPENLAWS_PREMIUM
+        redirect_uri:
+          - 'https://openlaws.com/?'
+    UserInfo:
+      properties:
+        password:
+          type: string
+        account_non_expired:
+          type: boolean
+        account_non_locked:
+          type: boolean
+        credentials_non_expired:
+          type: boolean
+        enabled:
+          type: boolean
+        authorities:
+          type: array
+          items:
+            type: string
+      required:
+        - password
+      example:
+        password: admin
+        account_non_epired: true
+        account_non_locked: true
+        credentials_non_expired: true
+        enabled: true
+        authorities:
+          - ROLE_ADMIN
+    ErrorModel:
       type: object
       properties:
         status:
@@ -9,6 +146,4 @@ ErrorModel:
         message:
           type: string
         debugMessage:
-          type: string
-        test:
           type: string
